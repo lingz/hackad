@@ -26,6 +26,10 @@ html h5,
 html h6 {
   color: #fff;
   font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 300;
+}
+html h1 {
+  font-size: 4em;
 }
 html label {
   color: #fff;
