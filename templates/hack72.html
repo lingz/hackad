@@ -1,7 +1,33 @@
 {% extends master.html %}
+{% block javascript %}
+	<script src="{{ static_url("js/hack72.js") }}"></script>
+{% end %}
 {% block title %}
   hack72
 {% end %}
 {% block body %}
-  hack72
+	<div id="hack72" style="text-align: center;">
+ 		<h1>
+ 			hack<span class="text-red">72</span>
+ 		</h1>
+		<h5>
+			by hack<span class="text-red">AD</span>
+		</h5>
+		<h3>
+			from 13:00 01/11/2013 to 13:00 04/11/2013
+		</h3>
+		<form name="signup" method="post" action="/hack72">
+			<label for="net_id">NetID:</label>
+			<input id="netid" type="text" name="net_id" style="color: rgb(192,8,31);"><br /><br />
+			<input type="submit" style="width: 140px; font-size: 1em; -webkit-appearance: none; padding: 5px;" value="sign up"><br />
+		</form>
+		<h2>	
+			<span class="text-red">Hackers</span> in residence
+		</h2>
+		<ul>
+			{% for name in names %}
+				<li>{{name}}</li>
+			{% end %}
+		</ul>
+	</div>
 {% end %}

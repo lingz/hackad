@@ -1,7 +1,21 @@
 {% extends master.html %}
+{% block javascript %}
+	<script src="{{ static_url("js/index.js") }}"></script>
+{% end %}
 {% block title %}
   hackAD
 {% end %}
 {% block body %}
-  hello world
+  <div style="text-align: center;">
+			<h1>
+				hack<span style="color:rgb(192,8,31);">AD</span>
+			</h1>
+			<form name="signup" method="post" action="cgi-bin/hackad.py">
+				<label for="name">Name:</label>
+				<input id="name" type="text" name="name" class="text-red"><br />
+				<label for="net_id">NetID:</label>
+				<input id="netid" type="text" name="net_id" class="text-red""><br /><br />
+				<input type="submit" style="width: 240px; font-size: 1em; -webkit-appearance: none; padding: 5px;" value="Join the revolution."><br />
+			</form>
+		</div>
 {% end %}

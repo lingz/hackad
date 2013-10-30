@@ -2,19 +2,51 @@ html {
   background: #000;
   color: #fff;
 }
-body,
-input {
+html body {
+  background-color: #000;
+}
+html body,
+html input {
   font-family: 'Source Code Pro', sans-serif;
 }
-p {
+html p {
   font-family: 'Source Sans Pro', sans-serif;
-  font-size: 3em;
+  color: #fff;
 }
-input {
+html input {
   font-size: 1em;
   -webkit-appearance: none;
   padding: 5px;
 }
-.red-text {
+html h1,
+html h2,
+html h3,
+html h4,
+html h5,
+html h6 {
+  color: #fff;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+html label {
+  color: #fff;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+.container {
+  background: #000;
+}
+.text-red {
   color: #c0081f;
+}
+#hack72 h1,
+#hack72 h5 {
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+#hack72 p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+#hack72 ul {
+  list-style: none;
+  padding: 0px;
 }
