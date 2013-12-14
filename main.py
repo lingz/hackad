@@ -12,7 +12,7 @@ define("port", default=8000, help="run on the given port", type=int)
 
 class Application(tornado.web.Application):
   def __init__(self):
-    handlers = [(r'/', IndexHandler), (r'/hack72', Hack72Handler)]
+    handlers = [(r'/', IndexHandler), (r'/hack72', Hack72Handler), (r'/nyuad_hackathon', NYUADHackathonHandler)]
     template_path = os.path.join(os.path.dirname(__file__), "templates")
     static_path = os.path.join(os.path.dirname(__file__), "static")
     conn = pymongo.Connection("localhost", 27017)
@@ -65,15 +65,52 @@ class Hack72Handler(tornado.web.RedirectHandler):
     elif net_id in hack72["data"]:
       self.write({"status":418, "reason":"NetID %s already registered" % net_id})
       return
+    forms.update({"_id": hack72["_id"]},{"$addToSet":{"data":net_id}})
+    self.write({"status": 200, "name": sign_up_doc["name"]})
+  
+  def initialize(self):
+    pass
+
+class NYUADHackathonHandler(tornado.web.RedirectHandler):
+  def get(self):
+    # coll = self.application.db.members
+    # sign_up_doc = coll.find_one({"net_id":net_id})
+    members = self.application.db.members
+    forms = self.application.db.forms
+    hackathon = forms.find_one({"name": "nyuad_hackathon_2014s"})
+    if not hackathon:
+      names = []
     else:
-      print hack72
-      forms.update({"_id": hack72["_id"]},{"$addToSet":{"data":net_id}})
-      self.write({"status": 200, "name": sign_up_doc["name"]})
+      net_ids = map(lambda datum: datum["net_id"], hackathon["data"])
+      names = map(lambda member: member["name"], members.find({"net_id": {"$in": net_ids}}))
 
-  
+    self.render("hackathon.html", names=names)
 
+  def post(self):
+    members = self.application.db.members
+    forms = self.application.db.forms
+    net_id = self.get_argument("net_id")
+    major = self.get_argument("major")
+    year = self.get_argument("year")
+    sign_up_doc = members.find_one({"net_id":net_id})
+    hackathon = forms.find_one({"name": "nyuad_hackathon_2014s"})
+    datum = {
+      "net_id": net_id,
+      "major": major,
+      "year": year
+    }
+    if not sign_up_doc:
+      self.write({"status":401, "reason":"NetID %s not registered as a member" % net_id})
+      return
+    if not hackathon:
+      forms.insert({"name": "nyuad_hackathon_2014s", "data": [datum]})
+      hackathon = forms.find_one({"name": "nyuad_hackathon_2014s"})
+    elif net_id in map(lambda datum: datum["net_id"], hackathon["data"]):
+      self.write({"status":418, "reason":"NetID %s already registered" % net_id})
+      return
+    forms.update({"_id": hackathon["_id"]},{"$addToSet":{"data":datum}})
+    self.write({"status": 200, "name": sign_up_doc["name"]})
 
-  
   def initialize(self):
     pass
 

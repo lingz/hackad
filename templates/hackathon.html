@@ -1,0 +1,37 @@
+{% extends master.html %}
+{% block javascript %}
+	<script src="{{ static_url("js/nyuad_hackathon.js") }}"></script>
+{% end %}
+{% block title %}
+  NYUAD Hackathon
+{% end %}
+{% block body %}
+	<div id="hack72" style="text-align: center;">
+ 		<h1>
+ 			NYUAD<span class="text-red"> Hackathon</span>
+ 		</h1>
+		<h5>
+			by NYUAD Institute
+		</h5>
+		<h3>
+			from 14/02/2014 to 16/02/2014
+		</h3>
+		<form name="signup" method="post" action="/hack72">
+			<label for="netid">NetID:</label>
+			<input id="netid" type="text" name="net_id" style="color: rgb(192,8,31);"><br /><br />
+			<label for="year">Graduation Year:</label>
+			<input id="year" type="text" name="year" style="color: rgb(192,8,31);"><br /><br />
+			<label for="major">Intended Major:</label>
+			<input id="major" type="text" name="major" style="color: rgb(192,8,31);"><br /><br />
+			<input type="submit" style="width: 140px; font-size: 1em; -webkit-appearance: none; padding: 5px;" value="sign up"><br />
+		</form>
+		<h2>	
+			<span class="text-red">Hackers</span> in residence
+		</h2>
+		<ul>
+			{% for name in names %}
+				<li>{{name}}</li>
+			{% end %}
+		</ul>
+	</div>
+{% end %}
