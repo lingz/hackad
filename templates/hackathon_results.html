@@ -1,0 +1,55 @@
+{% extends master.html %}
+{% block javascript %}
+	<script src="{{ static_url("js/nyuad_hackathon.js") }}"></script>
+{% end %}
+{% block title %}
+  NYUAD Hackathon
+{% end %}
+{% block body %}
+	<div id="hack72" style="text-align: center;">
+ 		<h1>
+ 			NYUAD<span class="text-red"> Hackathon</span>
+ 		</h1>
+		<h5>
+			by NYUAD Institute
+		</h5>
+		<h3>
+			from 14/02/2014 to 16/02/2014
+		</h3>
+		<h2>	
+			<span class="text-red">Hackers</span> in residence
+		</h2>
+    <table>
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          NetId
+        </th>
+        <th>
+          Year
+        </th>
+        <th>
+          Major
+        </th>
+      </tr>
+			{% for hacker in hackers %}
+      <tr>
+        <td>
+          {{hacker["name"]}}
+        </td>
+        <td>
+          {{hacker["net_id"]}}
+        </td>
+        <td>
+          {{hacker["year"]}}
+        </td>
+        <td>
+          {{hacker["major"]}}
+        </td>
+      </tr>
+			{% end %}
+    </table>
+	</div>
+{% end %}

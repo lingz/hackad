@@ -12,7 +12,9 @@ define("port", default=8000, help="run on the given port", type=int)
 
 class Application(tornado.web.Application):
   def __init__(self):
-    handlers = [(r'/', IndexHandler), (r'/hack72', Hack72Handler), (r'/nyuad_hackathon', NYUADHackathonHandler)]
+    handlers = [(r'/', IndexHandler), (r'/hack72', Hack72Handler), 
+        (r'/nyuad_hackathon_results', NYUADHackathonResultsHandler),
+        (r'/nyuad_hackathon', NYUADHackathonHandler)]
     template_path = os.path.join(os.path.dirname(__file__), "templates")
     static_path = os.path.join(os.path.dirname(__file__), "static")
     conn = pymongo.Connection("localhost", 27017)
@@ -35,7 +37,7 @@ class IndexHandler(tornado.web.RequestHandler):
     self.write({"status":200})
 
 
-class Hack72Handler(tornado.web.RedirectHandler):
+class Hack72Handler(tornado.web.RequestHandler):
   def get(self):
     # coll = self.application.db.members
     # sign_up_doc = coll.find_one({"net_id":net_id})
@@ -71,7 +73,7 @@ class Hack72Handler(tornado.web.RedirectHandler):
   def initialize(self):
     pass
 
-class NYUADHackathonHandler(tornado.web.RedirectHandler):
+class NYUADHackathonHandler(tornado.web.RequestHandler):
   def get(self):
     # coll = self.application.db.members
     # sign_up_doc = coll.find_one({"net_id":net_id})
@@ -113,6 +115,22 @@ class NYUADHackathonHandler(tornado.web.RedirectHandler):
 
   def initialize(self):
     pass
+
+class NYUADHackathonResultsHandler(tornado.web.RequestHandler):
+  def get(self):
+    # coll = self.application.db.members
+    # sign_up_doc = coll.find_one({"net_id":net_id})
+    members = self.application.db.members
+    forms = self.application.db.forms
+    hackathon = forms.find_one({"name": "nyuad_hackathon_2014s"})
+    if not hackathon:
+      names = []
+    else:
+      for entry in hackathon["data"]:
+        entry["name"] = members.find_one({"net_id": entry["net_id"]})["name"]
+    print hackathon["data"][0]["name"]
+
+    self.render("hackathon_results.html", hackers=hackathon["data"])
 
 if __name__ == '__main__':
   ConvStylus(os.path.join(os.path.dirname(__file__), "static/css/"))
